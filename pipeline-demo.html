@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
+  <title>AI Pipeline Demo | Kander Solutions</title>
+  <meta name="description" content="Watch AI assemble and deploy a secure pipeline. Select criteria, watch it build, then simulate a live deployment.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect rx='8' width='32' height='32' fill='%231a5ca7'/><path d='M19 7L10 16l9 9' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .demo-hero { padding: 100px 0 32px; text-align: center; background: var(--bg-primary); }
+    .demo-hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); margin: 12px 0 16px; }
+    .demo-hero h1 span { color: var(--cyan); }
+    .demo-hero .lede { max-width: 560px; margin: 0 auto; font-size: 1.02rem; color: var(--text-secondary); }
+    .demo-section { padding: 32px 0 80px; background: var(--bg-primary); }
+
+    /* Controls */
+    .demo-controls { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; align-items: flex-end; margin-bottom: 24px; }
+    .ctrl-group { display: flex; flex-direction: column; gap: 4px; }
+    .ctrl-group label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
+    .ctrl-group select { font-family: 'Space Grotesk', monospace; font-size: 0.82rem; font-weight: 600; padding: 8px 30px 8px 12px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; background: rgba(255,255,255,0.04); color: var(--white); appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6' fill='none' stroke='%23888' stroke-width='1.5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; }
+    .ctrl-group select:focus { outline: none; border-color: var(--cyan); }
+    .ctrl-group select option { background: #0d1321; }
+    .action-btn { font-family: 'Space Grotesk', monospace; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; padding: 10px 32px; border: 2px solid var(--cyan); border-radius: 10px; background: rgba(6,182,212,0.08); color: var(--cyan); cursor: pointer; transition: all 0.2s ease; }
+    .action-btn:hover { background: rgba(6,182,212,0.15); box-shadow: 0 0 20px rgba(6,182,212,0.15); }
+    .action-btn:disabled { opacity: 0.3; pointer-events: none; }
+    .action-btn.amber { border-color: var(--amber); color: var(--amber); background: rgba(245,158,11,0.08); }
+    .action-btn.amber:hover { background: rgba(245,158,11,0.15); box-shadow: 0 0 20px rgba(245,158,11,0.15); }
+
+    /* ═══ PHASE 1: Block Builder ═══ */
+    .builder-area { position: relative; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; overflow: hidden; min-height: 280px; margin-bottom: 24px; }
+    .builder-area::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px); background-size: 48px 48px; pointer-events: none; }
+    .builder-bar { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.06); background: rgba(0,0,0,0.3); font-family: 'Space Grotesk', monospace; font-size: 0.72rem; color: var(--text-muted); position: relative; z-index: 2; }
+    .builder-bar__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-muted); transition: all 0.3s; }
+    .builder-bar__dot.on { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); animation: bPulse 1s ease-in-out infinite; }
+    @keyframes bPulse { 0%,100%{opacity:1;}50%{opacity:0.4;} }
+    .builder-bar__text { flex: 1; letter-spacing: 0.05em; transition: color 0.3s; }
+    .builder-bar__text.on { color: var(--cyan); }
+    .builder-rows { padding: 24px 20px; display: flex; flex-direction: column; gap: 8px; position: relative; z-index: 1; }
+    .b-row-label { font-family: 'Space Grotesk', monospace; font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); opacity: 0; transition: opacity 0.3s; }
+    .b-row-label.vis { opacity: 1; }
+    .b-row { display: flex; align-items: center; gap: 0; flex-wrap: wrap; }
+    .b-stage { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; opacity: 0; transform: translateY(16px) scale(0.92); transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1); flex-shrink: 0; }
+    .b-stage.in { opacity: 1; transform: translateY(0) scale(1); }
+    .b-stage.flash { border-color: var(--cyan); box-shadow: 0 0 16px rgba(6,182,212,0.2); }
+    .b-stage.ai { border-color: rgba(6,182,212,0.2); }
+    .b-stage.ai.in { box-shadow: 0 0 12px rgba(6,182,212,0.08); }
+    .b-stage .ai-badge { position: absolute; top: -5px; right: -5px; background: var(--cyan); color: #0a0e17; font-size: 0.5rem; font-weight: 800; padding: 1px 4px; border-radius: 3px; opacity: 0; transform: scale(0); transition: all 0.25s ease 0.15s; }
+    .b-stage.ai.in .ai-badge { opacity: 1; transform: scale(1); }
+    .b-stage { position: relative; }
+    .b-stage__name { font-family: 'Space Grotesk', monospace; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--white); }
+    .b-stage__desc { font-size: 0.55rem; color: var(--text-muted); }
+    .b-stage.ai .b-stage__name { color: var(--cyan); }
+    .b-conn { width: 24px; height: 2px; position: relative; flex-shrink: 0; }
+    .b-conn__line { position: absolute; top: 0; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, rgba(6,182,212,0.4), rgba(59,130,246,0.4)); border-radius: 1px; transition: width 0.25s ease; }
+    .b-conn.drawn .b-conn__line { width: 100%; }
+    .b-conn__dot { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 6px var(--cyan); top: -1px; opacity: 0; }
+    .b-conn.flow .b-conn__dot { opacity: 1; animation: cFlow 1.2s linear infinite; }
+    @keyframes cFlow { 0%{left:-4px;}100%{left:24px;} }
+    .builder-done { text-align: center; padding: 16px; opacity: 0; transition: all 0.5s ease; }
+    .builder-done.vis { opacity: 1; }
+    .builder-done__badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px; border-radius: 999px; background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.3); font-family: 'Space Grotesk', monospace; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; color: var(--cyan); text-transform: uppercase; }
+    .builder-done__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); animation: bPulse 1.5s ease-in-out infinite; }
+    .scan-line { position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--cyan), transparent); opacity: 0; z-index: 10; pointer-events: none; }
+    .scan-line.go { opacity: 0.7; animation: scanGo 0.8s ease-in-out; }
+    @keyframes scanGo { 0%{top:0;opacity:0;}10%{opacity:0.7;}90%{opacity:0.7;}100%{top:100%;opacity:0;} }
+
+    /* ═══ PHASE 2: Pixel Deployment ═══ */
+    .deploy-section { margin-top: 40px; opacity: 0; transform: translateY(20px); transition: all 0.6s ease; pointer-events: none; }
+    .deploy-section.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .deploy-header { text-align: center; margin-bottom: 16px; }
+    .deploy-header h2 { font-size: 1.3rem; margin-bottom: 6px; }
+    .deploy-header h2 span { color: var(--cyan); }
+    .deploy-header p { font-size: 0.88rem; color: var(--text-muted); }
+    .pixel-wrap { position: relative; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; overflow: hidden; background: #080c14; }
+    .pixel-canvas { display: block; width: 100%; image-rendering: pixelated; image-rendering: crisp-edges; }
+    .pixel-hud { position: absolute; bottom: 8px; left: 12px; font-family: 'Space Grotesk', monospace; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--cyan); background: rgba(0,0,0,0.6); padding: 3px 8px; border-radius: 4px; pointer-events: none; }
+
+    .score-row { display: flex; gap: 24px; justify-content: center; margin-top: 20px; opacity: 0; transition: opacity 0.5s ease; }
+    .score-row.vis { opacity: 1; }
+    .score-item { text-align: center; }
+    .score-item__num { font-family: 'Space Grotesk', monospace; font-size: 1.4rem; font-weight: 700; color: var(--cyan); }
+    .score-item__label { font-size: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
+
+    @media (max-width: 768px) {
+      .ctrl-group { min-width: 45%; }
+      .b-stage { padding: 8px 10px; }
+      .b-conn { width: 16px; }
+      .score-row { gap: 12px; }
+    }
+    @media (max-width: 480px) {
+      .ctrl-group { min-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="container">
+      <div class="topbar">
+        <a href="index.html" class="brand">
+          <div class="brand__mark"><span class="brand__mark-glow"></span><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M20 7L10 16l10 9" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="brand__text"><span class="brand__name">Kander Solutions</span><span class="brand__tagline">Intelligent systems</span></div>
+        </a>
+        <nav class="nav">
+          <a href="capabilities.html">Capabilities</a>
+          <a href="ai-systems.html">AI Systems</a>
+          <a href="industries.html">Industries</a>
+          <a href="case-studies.html">Case Studies</a>
+          <a href="about.html">About</a>
+          <a href="careers.html">Careers</a>
+          <a class="nav__btn primary" href="contact.html">Schedule a Consultation</a>
+        </nav>
+        <button class="menu-button" aria-label="Open navigation"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="demo-hero">
+      <div class="container">
+        <span class="eyebrow">Interactive Demo</span>
+        <h1>Build it. <span>Deploy it.</span></h1>
+        <p class="lede">Select your requirements, watch AI assemble the pipeline, then simulate a live deployment through every stage.</p>
+      </div>
+    </section>
+
+    <section class="demo-section">
+      <div class="container">
+        <div class="demo-controls">
+          <div class="ctrl-group"><label>Industry</label><select id="cr-ind"><option value="commercial">Commercial</option><option value="healthcare">Healthcare</option><option value="financial">Financial</option><option value="federal">Federal</option><option value="startup">Startup</option></select></div>
+          <div class="ctrl-group"><label>Security</label><select id="cr-sec"><option value="standard">Standard</option><option value="high">High</option><option value="maximum">Maximum</option></select></div>
+          <div class="ctrl-group"><label>AI Level</label><select id="cr-ai"><option value="full">Full AI</option><option value="moderate">Moderate</option><option value="minimal">Minimal</option></select></div>
+          <button class="action-btn" id="btn-build">Build Pipeline</button>
+          <button class="action-btn amber" id="btn-deploy" disabled>Deploy</button>
+        </div>
+
+        <!-- PHASE 1: Builder -->
+        <div class="builder-area" id="builder-area">
+          <div class="scan-line" id="scan-line"></div>
+          <div class="builder-bar">
+            <span class="builder-bar__dot" id="bar-dot"></span>
+            <span class="builder-bar__text" id="bar-text">Awaiting instructions...</span>
+          </div>
+          <div class="builder-rows" id="builder-rows"></div>
+          <div class="builder-done" id="builder-done">
+            <div class="builder-done__badge"><span class="builder-done__dot"></span>Pipeline Ready</div>
+          </div>
+        </div>
+
+        <!-- PHASE 2: Pixel Deployment -->
+        <div class="deploy-section" id="deploy-section">
+          <div class="deploy-header">
+            <h2>Simulating <span>deployment</span></h2>
+            <p>Watch the AI robot carry your code through the pipeline.</p>
+          </div>
+          <div class="pixel-wrap">
+            <canvas id="pxc" class="pixel-canvas" width="960" height="300"></canvas>
+            <div class="pixel-hud" id="px-hud">Ready</div>
+          </div>
+          <div class="score-row" id="score-row">
+            <div class="score-item"><div class="score-item__num" id="s-sec">0</div><div class="score-item__label">Security</div></div>
+            <div class="score-item"><div class="score-item__num" id="s-vel">0</div><div class="score-item__label">Velocity</div></div>
+            <div class="score-item"><div class="score-item__num" id="s-rel">0</div><div class="score-item__label">Reliability</div></div>
+            <div class="score-item"><div class="score-item__num" id="s-cnt">0</div><div class="score-item__label">Stages</div></div>
+          </div>
+        </div>
+
+        <div style="text-align:center;margin-top:48px;">
+          <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:16px;">This is what AI-powered delivery looks like.</p>
+          <a class="btn primary large" href="contact.html">Build yours for real</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__column"><a href="index.html" class="brand small"><div class="brand__mark small"><span class="brand__mark-glow"></span><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M20 7L10 16l10 9" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><p class="brand__name">Kander Solutions</p></div></a><p class="muted-text" style="margin-top:10px;">Modern infrastructure and intelligent systems engineering.</p></div>
+      <div class="footer__column"><h5>Capabilities</h5><a href="capabilities.html#cloud-infra">Cloud &amp; Infrastructure</a><a href="capabilities.html#platform-k8s">Platform &amp; Kubernetes</a><a href="capabilities.html#devops-reliability">DevOps &amp; Reliability</a><a href="capabilities.html#ai-systems">AI &amp; Intelligent Systems</a></div>
+      <div class="footer__column"><h5>Company</h5><a href="about.html">About</a><a href="case-studies.html">Case Studies</a><a href="industries.html">Industries</a><a href="careers.html">Careers</a></div>
+      <div class="footer__column"><h5>Connect</h5><a href="contact.html">Contact</a></div>
+      <div class="footer__bottom"><p>&copy; 2026 Kander Solutions. All rights reserved.</p></div>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelector('.menu-button').addEventListener('click', function() { document.querySelector('.nav').classList.toggle('open'); this.classList.toggle('open'); });
+
+    // ═══ Stage definitions ═══
+    var SL = {
+      commit:    { name:'Code',       desc:'Push to repo',       ai:false, sec:0,  vel:5,  rel:5 },
+      aiReview:  { name:'AI Review',  desc:'Quality scan',       ai:true,  sec:12, vel:15, rel:10 },
+      build:     { name:'Build',      desc:'Container image',    ai:false, sec:5,  vel:5,  rel:10 },
+      test:      { name:'Test',       desc:'Unit tests',         ai:false, sec:5,  vel:5,  rel:15 },
+      integTest: { name:'Integration',desc:'E2E tests',          ai:false, sec:5,  vel:0,  rel:15 },
+      sast:      { name:'SAST',       desc:'Static analysis',    ai:false, sec:15, vel:0,  rel:5 },
+      aiSec:     { name:'AI Scan',    desc:'Threat analysis',    ai:true,  sec:20, vel:10, rel:10 },
+      sbom:      { name:'SBOM',       desc:'Supply chain',       ai:false, sec:15, vel:0,  rel:5 },
+      policy:    { name:'Policy',     desc:'Compliance gate',    ai:false, sec:15, vel:0,  rel:5 },
+      aiApprove: { name:'AI Approve', desc:'Deploy readiness',   ai:true,  sec:5,  vel:15, rel:10 },
+      staging:   { name:'Staging',    desc:'Pre-prod',           ai:false, sec:5,  vel:0,  rel:10 },
+      deploy:    { name:'Deploy',     desc:'Production',         ai:false, sec:0,  vel:5,  rel:5 },
+      aiMon:     { name:'AI Monitor', desc:'Observe & heal',     ai:true,  sec:15, vel:15, rel:15 }
+    };
+
+    function getStages(ind, sec, ai) {
+      var s = ['commit'];
+      if (ai !== 'minimal') s.push('aiReview');
+      s.push('build', 'test');
+      if (sec !== 'standard') s.push('integTest');
+      if (sec === 'maximum') { s.push('sast'); s.push('sbom'); }
+      else if (sec === 'high') s.push('sast');
+      if (ai !== 'minimal') s.push('aiSec');
+      if (sec !== 'standard') s.push('policy');
+      if (ai !== 'minimal') s.push('aiApprove');
+      if (ind === 'federal' || ind === 'healthcare' || sec === 'maximum') s.push('staging');
+      s.push('deploy');
+      if (ai !== 'minimal') s.push('aiMon');
+      return s;
+    }
+
+    // ═══ PHASE 1: Block Builder ═══
+    var builtStages = null;
+    var building = false;
+
+    function setBar(text, on) {
+      document.getElementById('bar-text').textContent = text;
+      document.getElementById('bar-text').className = 'builder-bar__text' + (on ? ' on' : '');
+      document.getElementById('bar-dot').className = 'builder-bar__dot' + (on ? ' on' : '');
+    }
+
+    function buildPipeline() {
+      if (building) return;
+      building = true;
+      document.getElementById('btn-build').disabled = true;
+      document.getElementById('btn-deploy').disabled = true;
+      document.getElementById('deploy-section').classList.remove('active');
+      document.getElementById('builder-done').classList.remove('vis');
+      document.getElementById('scan-line').classList.remove('go');
+      document.getElementById('builder-rows').innerHTML = '';
+
+      var stages = getStages(
+        document.getElementById('cr-ind').value,
+        document.getElementById('cr-sec').value,
+        document.getElementById('cr-ai').value
+      );
+
+      setBar('Analyzing requirements...', true);
+
+      // Break into rows of ~5
+      var rows = [], cur = [];
+      for (var i = 0; i < stages.length; i++) {
+        cur.push(stages[i]);
+        if (cur.length >= 5 || stages[i] === 'policy' || stages[i] === 'deploy') {
+          if (i < stages.length - 1) { rows.push(cur); cur = []; }
+        }
+      }
+      if (cur.length) rows.push(cur);
+
+      var rowLabels = ['Source & Build', 'Security & Compliance', 'Deploy & Observe', 'Monitoring'];
+
+      // Build DOM
+      var allItems = [];
+      for (var r = 0; r < rows.length; r++) {
+        var lbl = document.createElement('div');
+        lbl.className = 'b-row-label';
+        lbl.textContent = rowLabels[r] || 'Phase ' + (r + 1);
+        document.getElementById('builder-rows').appendChild(lbl);
+        var rowEl = document.createElement('div');
+        rowEl.className = 'b-row';
+        document.getElementById('builder-rows').appendChild(rowEl);
+        for (var s = 0; s < rows[r].length; s++) {
+          var st = SL[rows[r][s]];
+          var el = document.createElement('div');
+          el.className = 'b-stage' + (st.ai ? ' ai' : '');
+          el.innerHTML = (st.ai ? '<span class="ai-badge">AI</span>' : '') +
+            '<div><span class="b-stage__name">' + st.name + '</span><br><span class="b-stage__desc">' + st.desc + '</span></div>';
+          rowEl.appendChild(el);
+          allItems.push({ type: 'label', el: lbl, row: r });
+          allItems.push({ type: 'stage', el: el, name: st.name });
+          if (s < rows[r].length - 1) {
+            var cn = document.createElement('div');
+            cn.className = 'b-conn';
+            cn.innerHTML = '<div class="b-conn__line"></div><div class="b-conn__dot"></div>';
+            rowEl.appendChild(cn);
+            allItems.push({ type: 'conn', el: cn });
+          }
+        }
+      }
+
+      // Animate sequentially
+      var idx = 0, revealed = {};
+      function next() {
+        if (idx >= allItems.length) { finishBuild(stages); return; }
+        var it = allItems[idx++];
+        if (it.type === 'label') { if (!revealed[it.row]) { revealed[it.row] = true; it.el.classList.add('vis'); } next(); return; }
+        if (it.type === 'stage') {
+          setBar('Placing: ' + it.name, true);
+          it.el.classList.add('in');
+          it.el.classList.add('flash');
+          setTimeout(function() { it.el.classList.remove('flash'); }, 300);
+          setTimeout(next, 200);
+          return;
+        }
+        if (it.type === 'conn') {
+          it.el.classList.add('drawn');
+          setTimeout(function() { it.el.classList.add('flow'); }, 150);
+          setTimeout(next, 120);
+        }
+      }
+
+      setTimeout(function() { setBar('Assembling pipeline...', true); next(); }, 800);
+    }
+
+    function finishBuild(stages) {
+      builtStages = stages;
+      setBar('Pipeline assembled. Verification complete.', true);
+      document.getElementById('scan-line').classList.add('go');
+      setTimeout(function() {
+        document.getElementById('builder-done').classList.add('vis');
+        document.getElementById('deploy-section').classList.add('active');
+        building = false;
+        document.getElementById('btn-build').disabled = false;
+        document.getElementById('btn-build').textContent = 'Rebuild';
+        document.getElementById('btn-deploy').disabled = false;
+      }, 800);
+    }
+
+    document.getElementById('btn-build').addEventListener('click', buildPipeline);
+
+    // ═══ PHASE 2: Pixel Deployment ═══
+    var canvas = document.getElementById('pxc');
+    var ctx = canvas.getContext('2d');
+    var PW = 960, PH = 300, S = 3;
+    var deploying = false;
+    var dState = null;
+    var sparks = [];
+
+    var CC = { bg:'#080c14', belt:'#12182a', beltLine:'#1a2340', conv1:'#151e35', conv2:'#1a2845',
+      station:'#0f1a2e', sBorder:'#1e3050', sActive:'#06b6d4',
+      cyan:'#06b6d4', blue:'#3b82f6', amber:'#f59e0b',
+      rBody:'#06b6d4', rEye:'#fff', rDark:'#0891b2',
+      pkg:'#3b82f6', pkgD:'#2563eb', text:'#4a6080', textB:'#06b6d4' };
+
+    function px(x,y,w,h,c) { ctx.fillStyle = c; ctx.fillRect(x*S,y*S,w*S,h*S); }
+    function pxT(t,x,y,c,sz) { ctx.fillStyle = c; ctx.font = (sz||8)+'px monospace'; ctx.fillText(t,x*S,y*S); }
+
+    var beltOff = 0;
+    function drawBelt(y) {
+      px(0,y,320,5,CC.belt); px(0,y,320,1,CC.beltLine); px(0,y+4,320,1,CC.beltLine);
+      for (var i = -1; i < 33; i++) px(i*10+(beltOff%10),y+1,6,2,CC.conv2);
+      beltOff += 0.3;
+    }
+
+    function drawBot(x,y,f) {
+      var b = f%2===0?0:-1;
+      px(x+2,y+4+b,12,10,CC.rBody); px(x+3,y+3+b,10,1,CC.rBody); px(x+3,y+14+b,10,1,CC.rBody);
+      px(x+3,y+b,10,4,CC.rDark); px(x+4,y+1+b,8,2,CC.rBody);
+      px(x+5,y+1+b,2,2,CC.rEye); px(x+9,y+1+b,2,2,CC.rEye);
+      px(x+5,y+1+b,1,1,CC.cyan); px(x+9,y+1+b,1,1,CC.cyan);
+      px(x+7,y-2+b,2,2,CC.amber); px(x+8,y-3+b,1,1,f%4<2?CC.amber:CC.cyan);
+      var ay = f%2===0?7:6;
+      px(x,y+ay+b,2,4,CC.rDark); px(x+14,y+ay+b,2,4,CC.rDark);
+      var ls = f%4<2?0:1;
+      px(x+4-ls,y+15+b,3,4,CC.rDark); px(x+9+ls,y+15+b,3,4,CC.rDark);
+      px(x+2,y+8+b,12,1,CC.cyan);
+    }
+
+    function drawPkg(x,y,stage) {
+      px(x,y,10,10,CC.pkg); px(x+1,y+1,8,8,CC.pkgD); px(x+2,y+2,6,6,CC.pkg);
+      if (stage>=2) { px(x+3,y+3,4,1,'#60a5fa'); px(x+3,y+5,4,1,'#60a5fa'); }
+      if (stage>=4) px(x+6,y+6,2,2,'#34d399');
+      if (stage>=6) { px(x,y-1,10,1,CC.cyan); px(x,y+10,10,1,CC.cyan); px(x-1,y,1,10,CC.cyan); px(x+10,y,1,10,CC.cyan); }
+    }
+
+    function drawStn(x,y,label,active,isAI) {
+      var bc = active ? CC.sActive : CC.sBorder;
+      px(x,y+22,26,2,bc);
+      px(x+1,y+4,24,18,CC.station);
+      px(x+1,y+4,24,1,bc); px(x+1,y+21,24,1,bc); px(x+1,y+4,1,18,bc); px(x+24,y+4,1,18,bc);
+      if (isAI && active) { px(x+3,y+1,8,3,CC.cyan); pxT('AI',(x+4),(y+3.2),'#080c14',6); }
+      pxT(label,(x+2),(y+14),active?CC.textB:CC.text,6);
+      if (active) { px(x+8,y+7,10,1,CC.cyan); px(x+8,y+9,10,1,CC.cyan); }
+    }
+
+    function addSparks(x,y,n,c) { for(var i=0;i<n;i++) sparks.push({x:x,y:y,vx:(Math.random()-0.5)*2,vy:-Math.random()*2-0.5,life:15+Math.random()*15,c:c||CC.cyan}); }
+    function updateSparks() { for(var i=sparks.length-1;i>=0;i--) { var s=sparks[i]; s.x+=s.vx; s.y+=s.vy; s.vy+=0.08; s.life--; if(s.life<=0){sparks.splice(i,1);continue;} px(Math.floor(s.x),Math.floor(s.y),2,2,s.c); } }
+
+    function startDeploy() {
+      if (deploying || !builtStages) return;
+      deploying = true;
+      document.getElementById('btn-deploy').disabled = true;
+      document.getElementById('score-row').classList.remove('vis');
+      sparks = [];
+
+      var stages = builtStages;
+      var stnW = 26, gap = Math.max(3, Math.floor((310-stages.length*stnW)/(stages.length+1)));
+      var sx = Math.max(3, Math.floor((320-stages.length*(stnW+gap))/2));
+      var stns = [];
+      for (var i=0;i<stages.length;i++) stns.push({ x:sx+i*(stnW+gap), y:48, key:stages[i], t:SL[stages[i]] });
+
+      dState = { stages:stages, stns:stns, phase:'intro', rx:-20, ry:52, ci:-1,
+        tx:stns[0].x-2, frame:0, wt:0, wd:25, ps:0, pkx:0, pkVis:false,
+        active:[], done:false, scores:{sec:20,vel:20,rel:20} };
+      for (var j=0;j<stages.length;j++) dState.active.push(false);
+      document.getElementById('px-hud').textContent = 'Deploying...';
+      document.getElementById('deploy-section').scrollIntoView({ behavior:'smooth', block:'center' });
+    }
+
+    function updateDeploy() {
+      if (!dState) return;
+      var a = dState;
+      a.frame++;
+      if (a.phase==='intro') {
+        a.rx+=1.5;
+        if (a.rx>=a.tx) { a.rx=a.tx; a.phase='work'; a.ci=0; a.wt=0; a.active[0]=true; a.pkVis=true; a.pkx=a.stns[0].x+8;
+          document.getElementById('px-hud').textContent=a.stns[0].t.name; addSparks(a.rx+8,a.ry+4,5,CC.cyan); }
+        else document.getElementById('px-hud').textContent='Robot deploying...';
+      } else if (a.phase==='work') {
+        a.wt++;
+        if (a.wt%6===0) addSparks(a.stns[a.ci].x+13,a.stns[a.ci].y+6,2,a.stns[a.ci].t.ai?CC.cyan:CC.amber);
+        if (a.wt>=a.wd) {
+          var st=a.stns[a.ci]; a.scores.sec+=st.t.sec; a.scores.vel+=st.t.vel; a.scores.rel+=st.t.rel; a.ps=a.ci+1;
+          addSparks(a.rx+8,a.ry+2,8,CC.amber);
+          if (a.ci<a.stns.length-1) { a.ci++; a.tx=a.stns[a.ci].x-2; a.phase='move'; document.getElementById('px-hud').textContent='Moving...'; }
+          else { a.phase='done'; a.done=true; document.getElementById('px-hud').textContent='Deployed'; addSparks(a.rx+8,a.ry,20,CC.cyan); addSparks(a.rx+8,a.ry,15,CC.amber); finishDeploy(a); }
+        }
+      } else if (a.phase==='move') {
+        a.rx+=1.2; a.pkx+=1.2;
+        if (a.rx>=a.tx) { a.rx=a.tx; a.pkx=a.stns[a.ci].x+8; a.phase='work'; a.wt=0; a.active[a.ci]=true;
+          document.getElementById('px-hud').textContent=a.stns[a.ci].t.name; addSparks(a.rx+8,a.ry+4,5,CC.cyan); }
+      }
+    }
+
+    function finishDeploy(a) {
+      var sec=Math.min(a.scores.sec,100), vel=Math.min(a.scores.vel,100), rel=Math.min(a.scores.rel,100);
+      document.getElementById('score-row').classList.add('vis');
+      animNum('s-sec',sec); animNum('s-vel',vel); animNum('s-rel',rel); animNum('s-cnt',a.stages.length);
+      setTimeout(function() { deploying=false; document.getElementById('btn-deploy').disabled=false; document.getElementById('btn-deploy').textContent='Redeploy'; },1000);
+    }
+
+    function animNum(id,tgt) { var el=document.getElementById(id),c=0,st=Math.max(1,Math.ceil(tgt/25)),t=setInterval(function(){c+=st;if(c>=tgt){c=tgt;clearInterval(t);}el.textContent=c;},40); }
+
+    // Render loop
+    function render() {
+      ctx.fillStyle = CC.bg; ctx.fillRect(0,0,PW,PH);
+      // Grid
+      ctx.fillStyle='rgba(6,182,212,0.02)';
+      for(var gx=0;gx<320;gx+=16) ctx.fillRect(gx*S,0,1,PH);
+      for(var gy=0;gy<100;gy+=16) ctx.fillRect(0,gy*S,PW,1);
+      drawBelt(76);
+
+      if (dState) {
+        updateDeploy();
+        var a=dState;
+        for(var i=0;i<a.stns.length;i++) drawStn(a.stns[i].x,a.stns[i].y,a.stns[i].t.name.substring(0,8),a.active[i],a.stns[i].t.ai);
+        if(a.pkVis) drawPkg(a.pkx,65,a.ps);
+        drawBot(a.rx,a.ry,a.frame);
+        updateSparks();
+        if(a.done&&a.frame%20<10) for(var j=0;j<a.stns.length;j++) if(a.stns[j].t.ai) px(a.stns[j].x+10,a.stns[j].y+2,8,1,CC.cyan);
+      } else {
+        drawBelt(76);
+        pxT('BUILD A PIPELINE FIRST',80,45,CC.text,10);
+        drawBot(148,52,Math.floor(Date.now()/300));
+      }
+
+      requestAnimationFrame(render);
+    }
+    render();
+
+    document.getElementById('btn-deploy').addEventListener('click', startDeploy);
+  </script>
+</body>
+</html>

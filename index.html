@@ -9,7 +9,7 @@
   <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
   <title>Kander Solutions | Modern Infrastructure &amp; Intelligent Systems</title>
   <meta name="description" content="Kander Solutions engineers resilient cloud platforms, intelligent automation, and AI-enabled operations for organizations that demand reliability at scale.">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect rx='8' width='32' height='32' fill='%230ea5e9'/><text x='7' y='24' font-size='22' font-weight='bold' fill='white'>K</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect rx='8' width='32' height='32' fill='%231a5ca7'/><path d='M19 7L10 16l9 9' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'/></svg>">
   <meta property="og:title" content="Kander Solutions | Modern Infrastructure &amp; Intelligent Systems">
   <meta property="og:description" content="Kander Solutions engineers resilient cloud platforms, intelligent automation, and AI-enabled operations for organizations that demand reliability at scale.">
   <meta property="og:type" content="website">
@@ -32,7 +32,7 @@
           <div class="brand__mark">
             <span class="brand__mark-glow"></span>
             <svg viewBox="0 0 32 32" aria-hidden="true">
-              <path d="M24.8 7.2c-1-1.8-4.3-3-7.5-3-5.6 0-10 3.4-10 7.6 0 2.8 2 5.2 5 6.6l-3.4 6.4h4l3.2-5.8c5.7.2 10.2-3.2 10.2-7.6 0-1.6-.5-3-1.5-4.2Z" fill="currentColor"/>
+              <path d="M20 7L10 16l10 9" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
           <div class="brand__text">
@@ -57,6 +57,8 @@
   </nav>
 
   <header class="hero">
+    <canvas id="ai-canvas" class="ai-canvas"></canvas>
+    <div class="ai-scanline"></div>
     <div class="hero__orbs">
       <div class="hero__orb hero__orb--cyan"></div>
       <div class="hero__orb hero__orb--blue"></div>
@@ -66,7 +68,10 @@
     <div class="container">
       <div class="hero__content">
         <div class="hero__text">
-          <span class="eyebrow">Cloud &bull; Platforms &bull; AI</span>
+          <div class="ai-status">
+            <span class="ai-status__dot"></span>
+            <span class="ai-status__text">Systems online</span>
+          </div>
           <h1>Modern infrastructure.<br><span>Intelligent systems.</span></h1>
           <p class="lede">Kander Solutions engineers resilient cloud platforms, intelligent automation, and AI-enabled operations for organizations that demand reliability at scale.</p>
           <div class="hero__actions">
@@ -80,37 +85,27 @@
           </div>
         </div>
         <div class="hero__visual">
-          <div class="hero-nodes">
-            <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <line x1="80" y1="80" x2="200" y2="120" stroke="url(#line-grad)" stroke-width="1" class="node-line"/>
-              <line x1="200" y1="120" x2="320" y2="80" stroke="url(#line-grad)" stroke-width="1" class="node-line"/>
-              <line x1="200" y1="120" x2="200" y2="240" stroke="url(#line-grad)" stroke-width="1" class="node-line"/>
-              <line x1="200" y1="240" x2="100" y2="300" stroke="url(#line-grad)" stroke-width="1" class="node-line"/>
-              <line x1="200" y1="240" x2="300" y2="300" stroke="url(#line-grad)" stroke-width="1" class="node-line"/>
-              <line x1="80" y1="80" x2="60" y2="200" stroke="url(#line-grad)" stroke-width="1" class="node-line"/>
-              <line x1="320" y1="80" x2="340" y2="200" stroke="url(#line-grad)" stroke-width="1" class="node-line"/>
-              <line x1="60" y1="200" x2="100" y2="300" stroke="url(#line-grad)" stroke-width="1" class="node-line"/>
-              <line x1="340" y1="200" x2="300" y2="300" stroke="url(#line-grad)" stroke-width="1" class="node-line"/>
-              <circle cx="200" cy="120" r="8" class="node-dot node-dot--primary"/>
-              <circle cx="80" cy="80" r="5" class="node-dot"/>
-              <circle cx="320" cy="80" r="5" class="node-dot"/>
-              <circle cx="200" cy="240" r="7" class="node-dot node-dot--primary"/>
-              <circle cx="60" cy="200" r="4" class="node-dot"/>
-              <circle cx="340" cy="200" r="4" class="node-dot"/>
-              <circle cx="100" cy="300" r="5" class="node-dot"/>
-              <circle cx="300" cy="300" r="5" class="node-dot"/>
-              <defs>
-                <linearGradient id="line-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.4"/>
-                  <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.4"/>
-                </linearGradient>
-              </defs>
-            </svg>
+          <div class="ai-core">
+            <div class="ai-core__ring ai-core__ring--outer"></div>
+            <div class="ai-core__ring ai-core__ring--middle"></div>
+            <div class="ai-core__ring ai-core__ring--inner"></div>
+            <div class="ai-core__center"></div>
           </div>
-          <div class="stat-card">
-            <p>Uptime uplift</p>
-            <h3>99.95%</h3>
-            <small>through resilient architectures</small>
+          <div class="ai-hud ai-hud--tl">
+            <span class="ai-hud__label">PLATFORM STATUS</span>
+            <span class="ai-hud__value">OPERATIONAL</span>
+          </div>
+          <div class="ai-hud ai-hud--tr">
+            <span class="ai-hud__label">THREAT LEVEL</span>
+            <span class="ai-hud__value">NOMINAL</span>
+          </div>
+          <div class="ai-hud ai-hud--bl">
+            <span class="ai-hud__label">AI INFERENCE</span>
+            <span class="ai-hud__value">ACTIVE</span>
+          </div>
+          <div class="ai-hud ai-hud--br">
+            <span class="ai-hud__label">UPTIME</span>
+            <span class="ai-hud__value">99.95%</span>
           </div>
           <div class="stat-card">
             <p>Deployment speed</p>
@@ -371,6 +366,9 @@
             <p>Develop muscle memory, train teams, and hand off with confidence.</p>
           </div>
         </div>
+        <div style="text-align:center;margin-top:32px;">
+          <a class="btn ghost large" href="pipeline-demo.html" style="border-color:rgba(6,182,212,0.3);color:var(--cyan);">See it in action &mdash; AI Pipeline Demo &rarr;</a>
+        </div>
       </div>
     </section>
 
@@ -396,7 +394,7 @@
           <div class="brand__mark small">
             <span class="brand__mark-glow"></span>
             <svg viewBox="0 0 32 32" aria-hidden="true">
-              <path d="M24.8 7.2c-1-1.8-4.3-3-7.5-3-5.6 0-10 3.4-10 7.6 0 2.8 2 5.2 5 6.6l-3.4 6.4h4l3.2-5.8c5.7.2 10.2-3.2 10.2-7.6 0-1.6-.5-3-1.5-4.2Z" fill="currentColor"/>
+              <path d="M20 7L10 16l10 9" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
           <div>
@@ -468,6 +466,112 @@
       var u = 'info'; var d = 'kandersolutions.com';
       var el = document.getElementById('footer-email');
       if (el) { el.href = 'mailto:' + u + '@' + d; el.textContent = u + '@' + d; }
+    })();
+
+    // AI ambient particle network
+    (function() {
+      var canvas = document.getElementById('ai-canvas');
+      if (!canvas) return;
+      var ctx = canvas.getContext('2d');
+      var hero = canvas.parentElement;
+      var mouse = { x: -1000, y: -1000 };
+      var particles = [];
+      var count = 60;
+      var connectDist = 150;
+      var mouseDist = 200;
+      var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reducedMotion) return;
+
+      function resize() {
+        canvas.width = hero.offsetWidth;
+        canvas.height = hero.offsetHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      hero.addEventListener('mousemove', function(e) {
+        var rect = hero.getBoundingClientRect();
+        mouse.x = e.clientX - rect.left;
+        mouse.y = e.clientY - rect.top;
+      });
+      hero.addEventListener('mouseleave', function() {
+        mouse.x = -1000;
+        mouse.y = -1000;
+      });
+
+      for (var i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.4,
+          vy: (Math.random() - 0.5) * 0.4,
+          r: Math.random() * 2 + 1,
+          o: Math.random() * 0.4 + 0.1
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (var i = 0; i < particles.length; i++) {
+          var p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+          if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+          // Mouse repulsion
+          var dx = p.x - mouse.x;
+          var dy = p.y - mouse.y;
+          var dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < mouseDist) {
+            var force = (mouseDist - dist) / mouseDist * 0.02;
+            p.vx += dx * force;
+            p.vy += dy * force;
+          }
+
+          // Dampen velocity
+          p.vx *= 0.99;
+          p.vy *= 0.99;
+
+          // Draw particle
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(6, 182, 212, ' + p.o + ')';
+          ctx.fill();
+
+          // Connect nearby particles
+          for (var j = i + 1; j < particles.length; j++) {
+            var p2 = particles[j];
+            var ddx = p.x - p2.x;
+            var ddy = p.y - p2.y;
+            var d = Math.sqrt(ddx * ddx + ddy * ddy);
+            if (d < connectDist) {
+              var alpha = (1 - d / connectDist) * 0.15;
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.strokeStyle = 'rgba(6, 182, 212, ' + alpha + ')';
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          }
+
+          // Connect to mouse
+          if (dist < mouseDist) {
+            var mAlpha = (1 - dist / mouseDist) * 0.25;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.strokeStyle = 'rgba(59, 130, 246, ' + mAlpha + ')';
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+
+        requestAnimationFrame(draw);
+      }
+      draw();
     })();
 
     var observer = new IntersectionObserver(function(entries) {
