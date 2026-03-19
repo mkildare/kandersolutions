@@ -7,6 +7,7 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
   <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
+  <meta name="theme-color" content="#09090b">
   <title>About | Kander Solutions</title>
   <meta name="description" content="Learn about Kander Solutions: our mission, approach, values, and what sets us apart in modern infrastructure and AI delivery.">
   <meta property="og:title" content="About | Kander Solutions">
@@ -15,39 +16,43 @@
   <meta property="og:url" content="https://kandersolutions.com/about.html">
   <meta property="og:site_name" content="Kander Solutions">
   <meta name="twitter:card" content="summary">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect rx='8' width='32' height='32' fill='%231a5ca7'/><path d='M19 7L10 16l9 9' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect rx='8' width='32' height='32' fill='%23a3e635'/><path d='M19 7L10 16l9 9' fill='none' stroke='%2309090b' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <nav class="site-nav">
+  <div class="scroll-progress" id="scroll-progress"></div>
+
+  <nav class="site-nav" id="site-nav">
     <div class="container">
       <div class="topbar">
         <a href="index.html" class="brand">
           <div class="brand__mark">
-            <span class="brand__mark-glow"></span>
             <svg viewBox="0 0 32 32" aria-hidden="true">
               <path d="M20 7L10 16l10 9" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
           <div class="brand__text">
             <span class="brand__name">Kander Solutions</span>
-            <span class="brand__tagline">AI-forward delivery</span>
+            <span class="brand__tagline">// intelligent systems</span>
           </div>
         </a>
-        <nav class="nav">
+        <nav class="nav" id="main-nav">
           <a href="capabilities.html">Capabilities</a>
           <a href="ai-systems.html">AI Systems</a>
           <a href="industries.html">Industries</a>
           <a href="case-studies.html">Case Studies</a>
           <a href="#" class="active">About</a>
-          <a href="careers.html">Careers</a>
-          <a class="nav__btn primary" href="contact.html">Schedule a Consultation</a>
+          <a class="nav__btn primary" href="contact.html">Start a Project</a>
         </nav>
-        <button class="menu-button" aria-label="Open navigation">
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+        <button class="menu-button" id="menu-button" aria-label="Open navigation">
           <span></span><span></span><span></span>
         </button>
       </div>
@@ -57,50 +62,50 @@
   <main>
     <section class="page-hero">
       <div class="container">
-        <span class="eyebrow">About Us</span>
-        <h1>Pragmatic engineers. AI-first thinkers.</h1>
-        <p class="lede">Kander Solutions was founded on a simple belief: modern infrastructure should be automated, resilient, and ready for what's next. We bring deep platform engineering expertise and an AI-forward mindset to every engagement.</p>
+        <span class="eyebrow">About</span>
+        <h1>Built by engineers who ship.</h1>
+        <p class="lede">Kander Solutions was founded on a simple belief: modern infrastructure should be automated, resilient, and ready for what&rsquo;s next. We bring deep platform engineering expertise and an AI-forward mindset to every engagement.</p>
       </div>
     </section>
 
-    <section class="section section--dark">
+    <section class="section section--base">
       <div class="container">
         <div class="about-grid">
           <div class="about-block animate-in" style="transition-delay:.1s">
-            <div class="icon-box icon-box--cyan">
+            <div class="icon-box">
               <svg viewBox="0 0 32 32"><path d="M16 4l12 7v10l-12 7-12-7V11z" fill="currentColor"/></svg>
             </div>
-            <h3>Our Mission</h3>
-            <p>Help organizations build and operate modern platforms that are secure, scalable, and intelligent. We close the gap between strategy and execution so teams can deliver with confidence.</p>
+            <h3>Our Thesis</h3>
+            <p>The gap between strategy and execution is where most organizations lose. We close it with infrastructure that ships, not slide decks that don&rsquo;t.</p>
           </div>
           <div class="about-block animate-in" style="transition-delay:.2s">
-            <div class="icon-box icon-box--blue">
+            <div class="icon-box">
               <svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="10" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M16 10v6l4 4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
-            <h3>Our Approach</h3>
-            <p>We start with what's real: your current architecture, your team's capacity, and your business goals. No ivory-tower blueprints. Just practical engineering that ships and sustains.</p>
+            <h3>Our Method</h3>
+            <p>We start with what&rsquo;s real: your architecture, your team&rsquo;s capacity, your business goals. Then we build. No ivory-tower blueprints.</p>
           </div>
           <div class="about-block animate-in" style="transition-delay:.3s">
-            <div class="icon-box icon-box--purple">
+            <div class="icon-box">
               <svg viewBox="0 0 32 32"><path d="M8 8h6v6H8zM18 8h6v6h-6zM8 18h6v6H8zM18 18h6v6h-6z" fill="currentColor"/></svg>
             </div>
-            <h3>Our Values</h3>
-            <p>Transparency in every engagement. Simplicity over complexity. Ownership of outcomes. We build things that teams can actually run, not just admire in a slide deck.</p>
+            <h3>Our Standard</h3>
+            <p>Transparency. Simplicity over complexity. Ownership of outcomes. We build things teams can actually run.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section section--darker section--grid-bg">
+    <section class="section section--surface">
       <div class="container">
         <div class="section__head">
-          <span class="eyebrow">What sets us apart</span>
+          <span class="eyebrow">What makes us different</span>
           <h2>Deep expertise, delivered simply</h2>
         </div>
         <div class="differentiator-grid">
           <div class="differentiator animate-in" style="transition-delay:.1s">
             <h4>Platform-native thinking</h4>
-            <p>We don't just deploy tools. We design platforms that fit your team's workflow, compliance needs, and growth trajectory.</p>
+            <p>We don&rsquo;t just deploy tools. We design platforms that fit your team&rsquo;s workflow, compliance needs, and growth trajectory.</p>
           </div>
           <div class="differentiator animate-in" style="transition-delay:.2s">
             <h4>AI built in, not bolted on</h4>
@@ -108,7 +113,7 @@
           </div>
           <div class="differentiator animate-in" style="transition-delay:.3s">
             <h4>Hands-on delivery</h4>
-            <p>We write code, build pipelines, and ship infrastructure alongside your team. Advisory without execution isn't our style.</p>
+            <p>We write code, build pipelines, and ship infrastructure alongside your team. Advisory without execution isn&rsquo;t our style.</p>
           </div>
           <div class="differentiator animate-in" style="transition-delay:.4s">
             <h4>Knowledge transfer first</h4>
@@ -126,7 +131,7 @@
       </div>
     </section>
 
-    <section class="section section--dark">
+    <section class="section section--base">
       <div class="container">
         <div class="section__head">
           <span class="eyebrow">Our Team</span>
@@ -134,21 +139,19 @@
         </div>
         <div class="about-team-text" style="max-width:720px;">
           <p style="font-size:1.05rem;margin-bottom:16px;">Kander Solutions was founded by a deeply technical cloud and platform engineer with extensive experience in Kubernetes architecture, GitOps, VMware/Tanzu ecosystems, AWS and GovCloud, observability platforms, and AI systems engineering.</p>
-          <p style="font-size:1.05rem;margin-bottom:16px;">We're building a team of elite cloud, platform, and AI engineers who share our commitment to pragmatic engineering and client outcomes. Every engagement is staffed with senior engineers who can design, build, and operate -- not just advise.</p>
-          <p style="font-size:1.05rem;color:var(--text-muted);">Interested in joining? <a href="careers.html" style="color:var(--cyan);font-weight:600;">View careers &rarr;</a></p>
+          <p style="font-size:1.05rem;margin-bottom:16px;">We&rsquo;re building a team of elite cloud, platform, and AI engineers who share our commitment to pragmatic engineering and client outcomes. Every engagement is staffed with senior engineers who can design, build, and operate &mdash; not just advise.</p>
+          <p style="font-size:1.05rem;margin-bottom:16px;">No sales team. No account managers. Every engagement is led by the engineer who does the work.</p>
+          <p style="font-size:1.05rem;color:var(--text-muted);">Interested in joining? <a href="careers.html" style="color:var(--accent);font-weight:600;">View careers &rarr;</a></p>
         </div>
       </div>
     </section>
 
     <section class="cta-banner">
-      <div class="cta-banner__orb cta-banner__orb--1"></div>
-      <div class="cta-banner__orb cta-banner__orb--2"></div>
+      <div class="cta-banner__glow"></div>
       <div class="container">
         <div class="cta-box">
-          <div>
-            <h2>Want to work with us?</h2>
-            <p>We'd love to learn about your platform challenges and explore how we can help.</p>
-          </div>
+          <h2>Want to work with us?</h2>
+          <p>We&rsquo;d love to learn about your platform challenges and explore how we can help.</p>
           <a class="btn primary large" href="contact.html">Get in Touch</a>
         </div>
       </div>
@@ -157,45 +160,74 @@
 
   <footer class="footer">
     <div class="container">
-      <div class="footer__column">
+      <div class="footer__top">
         <a href="index.html" class="brand small">
-          <div class="brand__mark small"><span class="brand__mark-glow"></span><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M20 7L10 16l10 9" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div><p class="brand__name">Kander Solutions</p></div>
+          <div class="brand__mark small">
+            <svg viewBox="0 0 32 32" aria-hidden="true">
+              <path d="M20 7L10 16l10 9" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="brand__text">
+            <span class="brand__name">Kander Solutions</span>
+          </div>
         </a>
-        <p class="muted-text" style="margin-top:10px;">Modern infrastructure and intelligent systems engineering.</p>
+        <div class="footer__links">
+          <a href="capabilities.html">Capabilities</a>
+          <a href="ai-systems.html">AI Systems</a>
+          <a href="industries.html">Industries</a>
+          <a href="case-studies.html">Case Studies</a>
+          <a href="about.html">About</a>
+          <a href="careers.html">Careers</a>
+          <a href="contact.html">Contact</a>
+        </div>
       </div>
-      <div class="footer__column">
-        <h5>Capabilities</h5>
-        <a href="capabilities.html#cloud-infra">Cloud & Infrastructure</a>
-        <a href="capabilities.html#platform-k8s">Platform & Kubernetes</a>
-        <a href="capabilities.html#devops-reliability">DevOps & Reliability</a>
-        <a href="capabilities.html#ai-systems">AI & Intelligent Systems</a>
-      </div>
-      <div class="footer__column">
-        <h5>Company</h5>
-        <a href="about.html">About</a>
-        <a href="case-studies.html">Case Studies</a>
-        <a href="industries.html">Industries</a>
-        <a href="careers.html">Careers</a>
-      </div>
-      <div class="footer__column">
-        <h5>Connect</h5>
-        <a href="contact.html">Contact</a>
-      </div>
-      <div class="footer__bottom">
-        <p>&copy; 2026 Kander Solutions. All rights reserved.</p>
+      <div class="footer__bottom-row">
+        <p class="footer__copy">&copy; 2026 Kander Solutions. All rights reserved.</p>
+        <div class="social-icons">
+          <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14m-.5 15.5v-5.3a3.3 3.3 0 00-3.3-3.3c-.8 0-1.8.5-2.3 1.3v-1.1h-2.5v8.4h2.5v-4.9c0-.7.6-1.3 1.3-1.3a1.3 1.3 0 011.3 1.3v4.9h2.5M6.9 8.5a1.5 1.5 0 001.5-1.5A1.5 1.5 0 006.9 5.5a1.5 1.5 0 00-1.5 1.5 1.5 1.5 0 001.5 1.5m1.2 10h-2.5V10h2.5v8.5z"/></svg></a>
+          <a href="#" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12c0 4.4 2.9 8.2 6.8 9.5.5.1.7-.2.7-.5v-2c-2.8.6-3.3-1.2-3.3-1.2-.5-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.8.8.1-.7.3-1.1.6-1.3-2.2-.3-4.5-1.1-4.5-5 0-1.1.4-2 1-2.7-.1-.2-.4-1.3.1-2.6 0 0 .8-.3 2.7 1 .8-.2 1.6-.3 2.4-.3s1.6.1 2.4.3c1.8-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.6.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.5 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5C19.1 20.2 22 16.4 22 12c0-5.5-4.5-10-10-10z"/></svg></a>
+        </div>
       </div>
     </div>
   </footer>
 
   <script>
-    var menuButton = document.querySelector('.menu-button');
-    var nav = document.querySelector('.nav');
-    menuButton.addEventListener('click', function() {
-      nav.classList.toggle('open');
-      menuButton.classList.toggle('open');
+    // Menu toggle
+    var menuBtn = document.getElementById('menu-button');
+    var mainNav = document.getElementById('main-nav');
+    menuBtn.addEventListener('click', function() {
+      mainNav.classList.toggle('open');
+      menuBtn.classList.toggle('open');
     });
 
+    // Theme toggle
+    (function() {
+      var toggle = document.getElementById('theme-toggle');
+      var html = document.documentElement;
+      var stored = localStorage.getItem('theme');
+      if (stored) html.setAttribute('data-theme', stored);
+      toggle.addEventListener('click', function() {
+        var current = html.getAttribute('data-theme');
+        var next = current === 'light' ? 'dark' : 'light';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+      });
+    })();
+
+    // Scroll progress + nav background
+    (function() {
+      var progress = document.getElementById('scroll-progress');
+      var nav = document.getElementById('site-nav');
+      window.addEventListener('scroll', function() {
+        var scrollTop = window.scrollY;
+        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        if (docHeight > 0) progress.style.width = (scrollTop / docHeight * 100) + '%';
+        if (scrollTop > 40) nav.classList.add('scrolled');
+        else nav.classList.remove('scrolled');
+      }, { passive: true });
+    })();
+
+    // Scroll animations
     var observer = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
         if (entry.isIntersecting) {
